@@ -36,6 +36,18 @@ function normalizeString(str) {
 	return str;
 }
 
+function unitTest(str) {
+
+	var root = new Node();
+	root.leftChild = new Node();
+	root.rightChild = new Node();
+	root.value = '+';
+	root.leftChild.value = [5,0];
+	root.rightChild.value = [3,0];
+	
+	alert(interpretEquationTree(root));
+}
+
 /*
 	Basic mathematical operations (+,-,*,/,^) for 
 	use with whole expressions. To access, create an
@@ -43,6 +55,7 @@ function normalizeString(str) {
 	
 	Utilize Fraction.js to increase precision
 */
+<<<<<<< HEAD
 function expressionOperations() {
 	
 	/*
@@ -66,6 +79,41 @@ function expressionOperations() {
 		for (var key1 in expression1) {
 			if (expression2[key1]) {
 				result[key1] = Fraction(expression1[key1]).add(expression2[key1]);
+=======
+function constructEquationTree(str, currentNode){
+	
+	var inParen = false;
+	var parenCount = 0;
+	
+	var opOrder = 2;
+	var lowestOrderIndex = -1;
+	
+	while (lowestOrderIndex === -1) {
+		// Base case registers when a valid numerical term is passed
+			// Variable terms in the form 4x+7 --> [7,4]
+		if (/^(?=.*\d)\d*(?:\.\d*)?$/.test(str)) {
+			return [parseFloat(str),0];
+		}
+		else if (/^(?:(?=.*\d)\d*(?:\.\d*)?)?[a-z]$/.test(str)) {
+			return [0,parseFloat(str.slice(0,-1))];
+		}
+		// Search the current equation for the lowest order operator
+			// Precedence follows standard mathematical order of operations
+		for (var i=str.length-1;i>=0;i--) {
+			if (!inParen && opOrder > 0) {
+				if ((str[i] === '-' || str[i] === '+') && opOrder > 0){
+					opOrder = 0;
+					lowestOrderIndex = i;
+				}
+				else if ((str[i] === '*' || str[i] === '/') && opOrder > 1) {
+					opOrder = 1;
+					lowestOrderIndex = i;
+				}
+				else if (str[i] === '^') {
+					opOrder = 2;
+					lowestOrderIndex = i;
+				}
+>>>>>>> origin/master
 			}
 			else {
 				result[key1] = Fraction(expression1[key1]).add(0);
@@ -187,11 +235,21 @@ function substitute(expression, value) {
 	var result = {};
 	var opHelper = new expressionOperations();
 	
+<<<<<<< HEAD
 	result['_'] = Fraction(expression[value[0]]).mul(value[1]);	// Multiply coefficient by the known value
 	delete expression[value[0]];								// Remove given variable from the expression
 	result = opHelper.add(result, expression); 	
 	
 	return result;
+=======
+	var output;
+	var root = new Node();
+	str = trimSpace(str);
+	root.value = constructEquationTree(str, root);
+	
+	output = interpretEquationTree(root);
+	alert(output[1] + "x" + " + " + output[0]);
+>>>>>>> origin/master
 }
 
 /*
@@ -207,6 +265,7 @@ function simplifyExpression(str) {
 	
 	return initiateEquationTree(str);
 	
+<<<<<<< HEAD
 	/*
 		Build a tree for general arithmetic equations. Operators serve as inner nodes
 		and numerical terms serve as leaves. Tree is constructed with higher order
@@ -374,6 +433,71 @@ function simplifyExpression(str) {
 		this.value;
 		this.leftChild;
 		this.rightChild;
+=======
+	switch (root.value) {
+		case '+':
+			return add(interpretEquationTree(root.leftChild),interpretEquationTree(root.rightChild));
+			break;
+		case '-':
+			return subtract(interpretEquationTree(root.leftChild),interpretEquationTree(root.rightChild));
+			break;
+		case '*':
+			return multiply(interpretEquationTree(root.leftChild),interpretEquationTree(root.rightChild));
+			break;
+		case '/':
+			return divide(interpretEquationTree(root.leftChild),interpretEquationTree(root.rightChild));
+			break;  
+		case '^':
+			return Math.pow(interpretEquationTree(root.leftChild),interpretEquationTree(root.rightChild));
+			break;
+>>>>>>> origin/master
+	}
+	
+	/*
+	/^(?=.*\d)\d*(?:\.\d*)?$/
+		Operation helper functions. Implement rules for variable operations.
+		
+		term parameters are arrays where the value stored at index i is equal
+		to the coefficient of x^i
+	*/
+	function add(term1, term2) {
+	
+		return [term1[0] + term2[0], term1[1] + term2[1]];
+	}
+	function subtract(term1, term2) {
+	
+		return [term1[0] - term2[0], term1[1] - term2[1]];
+	}
+	// Only capable of x^0 and x^1 order functions
+	function multiply(term1, term2) {
+	
+		// zero-power * zero-power
+		if (term1[1] === 0 && term2[1] === 0) {
+			return [term1[0] * term2[0],0];
+		}
+		// zero-power * (zero-power + first-power)
+		else if (term1[1] === 0) {
+			return [term1[0] * term2[0], term1[0] * term2[1]];
+		}
+		// (zero-power + first-power) * zero-power
+		else {
+			return [term1[0] * term2[0], term1[1] * term2[0]];
+		}
+	}
+	// Only capable of x^0 and x^1 order functions
+	function divide(term1, term2) {
+		// zero-power / zero-power
+		if (term1[1] === 0 && term2[1] === 0) {
+			return [term1[0] / term2[0],0];
+		}
+		// zero-power / (zero-power + first-power)
+		else if (term1[1] === 0) {
+			return [term1[0] / term2[0], term1[0] / term2[1]];
+		}
+		// (zero-power + first-power) / zero-power
+		else {
+			return [term1[0] / term2[0], term1[1] / term2[0]];
+		}
 	}
 }
 
