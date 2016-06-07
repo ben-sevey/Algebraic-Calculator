@@ -1,9 +1,11 @@
 <html>
 	<head>
-		<script src="equationParser.js"></script>
+		<script src="equationParser.js" type="text/javascript"></script>
+		<script src="fraction.js/fraction.js" type="text/javascript"></script>
 	</head>
 	<body>
-		<input id='input' type='text'>
-		<button onclick="initiateEquationTree(document.getElementById('input').value)">Test</button>
+		<textarea id='input' type='text'></textarea>
+		<!--button onclick="initiateEquationTree(document.getElementById('input').value)">Test</button-->
+		<button onclick="unitTest(document.getElementById('input').value)">Test</button>
 	</body>
 </html>
