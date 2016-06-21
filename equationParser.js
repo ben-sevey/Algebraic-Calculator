@@ -2,6 +2,14 @@
 var opHelper = new expressionOperations();
 
 /*
+	Is it possible to call .slice() directly from an
+	onlclick event?
+*/
+function deleteLast(str) {
+	return str.slice(0,-1);
+}
+
+/*
 	Based on the input determine whether we need to simplify or solve,
 	and if solving is it a single- or multi-variable system.
 */
@@ -26,7 +34,7 @@ function inputHandler(input) {
 		output = "An Error occurred. Please check the input.";
 	}
 
-	alert(output);
+	return(output);
 }
 
 /*
@@ -37,10 +45,10 @@ function expressionToString(expression) {
 	
 	var str = "";
 	for (var key in expression) {
-		str += expression[key].toFraction(false) + key + " + ";
+		str += expression[key].toFraction(false) + key + "+";
 	}
 	
-	return str.slice(0, -3).replace(/_/g, "");
+	return str.slice(0, -1).replace(/_/g, "");
 }
 
 /*
@@ -52,16 +60,16 @@ function valueToString(valueSet) {
 	var str = "";
 	for (var i=valueSet.length-1; i>=0; i--) {
 		if (valueSet[i][1] === '@') {
-			return "all solutions";
+			return "All Solutions";
 		}
 		else if (valueSet[i][1] === '!') {
-			return "no solution";
+			return "No Solution";
 		}
 		else {
-			str += valueSet[i][0] + " = " + valueSet[i][1] + ",";
+			str += valueSet[i][0] + "=" + valueSet[i][1] + ", ";
 		}
 	}
-	return str.slice(0,-1);
+	return str.slice(0,-2);
 }
 
 /*
@@ -484,7 +492,7 @@ function singleVariableSolver(str) {
 		return [token, Fraction(-1).mul((Fraction(temp['_']).div(temp[token]))).toFraction()];
 	}
 	else {
-		if (temp['_'].n === 0) {
+		if (!temp['_'] || temp['_'].n === 0) {
 			return [token, "@"];
 		}
 		else {
