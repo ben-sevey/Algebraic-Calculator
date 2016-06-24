@@ -2,14 +2,6 @@
 var opHelper = new expressionOperations();
 
 /*
-	Is it possible to call .slice() directly from an
-	onlclick event?
-*/
-function deleteLast(str) {
-	return str.slice(0,-1);
-}
-
-/*
 	Based on the input determine whether we need to simplify or solve,
 	and if solving is it a single- or multi-variable system.
 */
@@ -31,7 +23,7 @@ function inputHandler(input) {
 	}
 	
 	if (output === "") {
-		output = "An Error occurred. Please check the input.";
+		output = "Error. Check input.";
 	}
 
 	return(output);
@@ -82,14 +74,14 @@ function normalizeString(str) {
 	str = str.replace(/\s/g,''); // Remove white space
 	str = str.replace(/\u2013|\u2014/g,'-'); // Replace &ndash or &mdash with simple dash
 	
-	// Reduce consecutive negaive signs Ex. ---2 = -2 
+	// Reduce consecutive negative signs Ex. ---2 = -2 
 	var repeatedMinus = str.match(/--+/g);
 	if (repeatedMinus) {
 		for (var i=0; i<repeatedMinus.length; i++) {
 			var reduced;
 			if (repeatedMinus[i].length%2 === 0) {
 				reduced = new RegExp(repeatedMinus);
-				str = str.replace(reduced,'');
+				str = str.replace(reduced,'+');
 			}
 			else {
 				reduced = new RegExp(repeatedMinus);

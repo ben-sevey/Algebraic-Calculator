@@ -1,13 +1,27 @@
+body {
+	background-color: #ffd693;
+}
+
 #outer {
+	margin-top: 50px;
 	font-family: tahoma;
 	text-align: center;
 }
 
 #instructions {
+	width: 540px;
+	padding-right: 15px;
 	float: left;
 	display: inline-block;
 	font-size: 20px;
 	text-align: left;
+	background: #eeeeee;
+	border: 1px solid #333333;
+	border-radius: 5px;
+}
+
+#instructions li {
+	margin-top: 10px;
 }
 
 #frame {
@@ -51,11 +65,24 @@
 	width: 80px;
 	float: left;
 	font-size: 30px;	
-	background: linear-gradient(to bottom right, #a0a0a0, #dddddd 55%, #dddddd);
 	border: 2px outset;
 }
 
 .btn:active {
 	color: #ff0000;
-	border: 2px solid #dddddd;
+	border: 2px outset red;
+	
+}
+
+.steel {
+	background: linear-gradient(to bottom right, #a0a0a0, #dddddd 55%, #dddddd);
+}
+
+
+.gold {
+	background: linear-gradient(to bottom right, #ffdb43, #ffeb99 55%, #ffeb99);
+}
+
+.ice {
+	background: linear-gradient(to bottom right, #99ceff, #e6f3ff 55%, #e6f3ff);
 }
